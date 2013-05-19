@@ -11,6 +11,7 @@ curl({
 		//utils
 		"pubsub" : "utils/pubsub", //event wizardry
 		"mathutils": "utils/mathutils",
+		"stage": "utils/stage",
 		
 		//controllers
 		"loader": "controllers/preloadcontroller",

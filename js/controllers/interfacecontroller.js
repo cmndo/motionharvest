@@ -1,6 +1,5 @@
-define(['jquery', 'pubsub'], function($, PubSub){
-	//treat this just like a jsbin
-	var root = $("#root");
+define(['jquery', 'pubsub', 'stage'], function($, PubSub, root){
+
 	
 	var catbox = $('<div/>').css({
 		width: 200,
