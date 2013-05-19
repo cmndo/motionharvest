@@ -1,9 +1,7 @@
 define(['jquery', 'mustache', 'pubsub', 'root'], function($, mustache, PubSub, root){
 
 	var base = "js/examples/catbox/";
-	
 	var catbox;
-	var binLoaded = false;
 	
 	function onLoadComplete(e){
 		//relative to baseUrl
@@ -41,6 +39,7 @@ define(['jquery', 'mustache', 'pubsub', 'root'], function($, mustache, PubSub, r
 			
 			
 			PubSub.publish("Loader.PRELOAD_NEEDED", {
+				//relative to base
 				assets : [base +'cat.jpg'],
 				onComplete : onLoadComplete,
 				onProgress : onLoadProgress
