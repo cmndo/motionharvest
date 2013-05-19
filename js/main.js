@@ -13,11 +13,11 @@ curl({
 		"mathutils": "utils/mathutils",
 		
 		//controllers
-		"loadqueue": "controllers/loadqueue",
+		"loader": "controllers/preloadcontroller",
 		"interface": "controllers/interfacecontroller"
 		
 	}
-}, ['jquery', 'interface', 'pubsub'], function($, Interface, PubSub) {
+}, ['jquery', 'interface', 'pubsub', 'loader'], function($, Interface, PubSub, PreloadController) {
 	/*
 		Load up the UI.
 		Start loading lots of stuff.

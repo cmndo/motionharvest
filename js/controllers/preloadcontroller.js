@@ -1,21 +1,21 @@
+/*
+	OBJECTIVE:
+	Get this working with createJS added as a <script> tag
+	Then turn createJS into an AMD Module. for now, #25 has the new creatjs.LoadQueue() call.
+*/
 define(['jquery', 'pubsub'], function($, PubSub) {
 
-	function PreloadController($elem) {
-
-		
 
 		var preload;
 
 		//an array of assets is going to come in.
-		//For a refresher on pubsub look in /utils/pubsub.js
 		PubSub.subscribe('Loader.PRELOAD_NEEDED', addAssetsToQueue);
 
 		var groupQueue = [];
 		var counter = 0;
-
 		var stopped = true;
-
 		var firstLoad = true;
+		
 		function addAssetsToQueue(evt) {
 
 			if (stopped) {
@@ -23,10 +23,6 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 				PubSub.publish("UI.MOUSE_LOCK", true);
 
 				preload = new createjs.LoadQueue();
-				$bar.css('width', '1%');
-				$el.show();
-
-				//load events
 				preload.addEventListener("complete", handleComplete);
 				preload.addEventListener("progress", handleOverallProgress);
 				preload.setMaxConnections(1);
@@ -34,7 +30,7 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 
 				if (firstLoad) {
 					firsLoad = false;
-					gradBack();
+					// put a function to call after the first load
 				}
 
 			}
@@ -94,17 +90,15 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 			preload.close();
 			stopped = true;
 			setTimeout(function() {
-
-				$el.fadeOut(200, function() {
-					$grad_loader.hide();
-				});
+				//turn off the engine.
 				PubSub.publish("UI.MOUSE_LOCK", false);
 			}, 500)
 
 		}
 
 		function handleOverallProgress(e) {
-			$bar.css('width', Math.round(preload.progress * 100) + "%");
+			console.log(e);
+			PubSub.publish("Loader.PROGRESS", {target: e.target, progress: preload.progress});
 		}
 
 		//preload.addEventListener("fileload", handleFileLoad);
@@ -128,8 +122,8 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 			console.log('file error');
 		}
 
-	}
+	
 
-	return PreloadController;
+	return {credit:"Aaron"};
 
 })
