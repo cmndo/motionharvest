@@ -11,20 +11,26 @@ curl({
 		//utils
 		"pubsub" : "utils/pubsub", //event wizardry
 		"mathutils": "utils/mathutils",
-		"stage": "utils/stage",
+		"root": "utils/root",
 		
 		//controllers
 		"loader": "controllers/preloadcontroller",
-		"interface": "controllers/interfacecontroller"
+		
+		//example
+		"cat_example": "examples/catbox/main"
 		
 	}
-}, ['jquery', 'interface', 'pubsub', 'loader'], function($, Interface, PubSub, PreloadController) {
+}, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
 	/*
 		Load up the UI.
 		Start loading lots of stuff.
 	*/
 	$(document).ready(function() {
-		Interface.build();
+		
+		curl(['cat_example'], function(catExample){
+			catExample.build();
+		});
+	
 	});
 	
 });
