@@ -17,7 +17,9 @@ define(['jquery', 'pubsub', 'root'], function($, PubSub, root){
 				height: 287,
 				background: 'purple'
 			}).append(e[0]).on('click', function(e){
-				PubSub.publish("BOX_CLICK", {working:true})
+				
+				console.log("clicked");
+				
 			});
 			
 			$imageWrapper.append(catbox);

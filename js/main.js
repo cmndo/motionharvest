@@ -17,7 +17,8 @@ curl({
 		"loader": "controllers/preloadcontroller",
 		
 		//example
-		"cat_example": "examples/catbox/main"
+		"cat_example": "examples/catbox/main",
+		"background_example": "examples/background/main"
 		
 	}
 }, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
@@ -29,6 +30,9 @@ curl({
 		
 		curl(['cat_example'], function(catExample){
 			catExample.build();
+			
+			curl('background_example');
+			
 		});
 	
 	});
