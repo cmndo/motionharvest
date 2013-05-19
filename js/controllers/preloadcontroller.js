@@ -97,8 +97,9 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 		}
 
 		function handleOverallProgress(e) {
-			console.log(e);
-			PubSub.publish("Loader.PROGRESS", {target: e.target, progress: preload.progress});
+			for (var k = 0; k < groupQueue.length; k++) {
+				groupQueue[k].onProgress({target: e.target, progress: preload.progress});
+			}
 		}
 
 		//preload.addEventListener("fileload", handleFileLoad);
