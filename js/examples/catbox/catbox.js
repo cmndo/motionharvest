@@ -1,4 +1,4 @@
-define(['jquery', 'pubsub', 'root'], function($, PubSub, root){
+define(['jquery', 'mustache', 'pubsub', 'root'], function($, mustache, PubSub, root){
 
 	var base = "js/examples/catbox/";
 	
@@ -6,9 +6,11 @@ define(['jquery', 'pubsub', 'root'], function($, PubSub, root){
 	var binLoaded = false;
 	
 	function onLoadComplete(e){
-		$.get(base + "bin.html", function(data){
-			//attach data into the element we're using as 
-			root.append(data);
+		//relative to baseUrl
+		curl("text!examples/catbox/bin.html", function(data){
+			
+			console.log(data);
+			root.append(mustache.render(data, { greeting: "Win"}));
 			
 			var $imageWrapper = $('#image_wrapper', root);
 			

@@ -7,6 +7,7 @@ curl({
 	paths : {
 		//libs
 		"jquery" : "libs/jquery-1.7.2.min", //slightly modified for noConflict
+		"mustache" : "libs/mustache",
 		
 		//utils
 		"pubsub" : "utils/pubsub", //event wizardry
@@ -17,7 +18,7 @@ curl({
 		"loader": "controllers/preloadcontroller",
 		
 		//example
-		"cat_example": "examples/catbox/main",
+		"cat_example": "examples/catbox/catbox",
 		"background_example": "examples/background/main"
 		
 	}
