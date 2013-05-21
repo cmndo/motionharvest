@@ -7,7 +7,7 @@ define(['jquery', 'mustache', 'pubsub', 'root'], function($, mustache, PubSub, r
 		//relative to baseUrl
 		curl("text!examples/catbox/bin.html", function(data){
 			
-			console.log(data);
+			//mustache this template
 			root.append(mustache.render(data, { greeting: "Win"}));
 			
 			var $imageWrapper = $('#image_wrapper', root);

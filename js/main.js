@@ -19,25 +19,28 @@ curl({
 		
 		//example
 		"cat_example": "examples/catbox/catbox",
-		"background_example": "examples/background/main"
+		"background_example": "examples/background/main",
+		
+		//Angular dynamically loaded
+		"angular_example" : "examples/angular-module/angular-example"
 		
 	}
 }, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
 	/*
-		Load up the UI.
-		Start loading lots of stuff.
+		Start loading some examples
+		jQuery just loaded, lets make sure jQuery's ready to be used
 	*/
 	$(document).ready(function() {
 		
 		curl(['cat_example'], function(catExample){
 			catExample.build();
-			
-			curl('background_example');
-			
 		});
-	
+		
+		curl('background_example');
+		
+		curl('angular_example');
 	});
-	
+
 });
 	
 	
