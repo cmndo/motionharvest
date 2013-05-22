@@ -1,0 +1,11 @@
+<div ng-controller="ClickController">
+	<label>Controlled via external script</label>
+	<h1><a href="#" ng-click="do()">Click here. Check Console. Check the code.</a></h1>
+</div>
+<script type="text/javascript">
+	function ClickController($scope){
+		$scope.do = function(){
+			console.log("Not a bad demo.");
+		};
+	}
+</script>

@@ -22,7 +22,8 @@ curl({
 		"background_example": "examples/background/main",
 		
 		//Angular dynamically loaded
-		"angular_example" : "examples/angular-module/angular-example"
+		"angular_example" : "examples/angular-module/angular-example",
+		"angular_example_copy" : "examples/angular-module-copy/angular-example"
 		
 	}
 }, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
@@ -34,6 +35,7 @@ curl({
 		
 		curl(['cat_example'], function(catExample){
 			catExample.build();
+			curl('angular_example_copy');
 		});
 		
 		curl('background_example');
