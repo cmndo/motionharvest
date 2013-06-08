@@ -17,13 +17,14 @@ curl({
 		//controllers
 		"loader": "controllers/preloadcontroller",
 		
-		//example
+		/*//examples
 		"cat_example": "examples/catbox/catbox",
 		"background_example": "examples/background/main",
-		
-		//Angular dynamically loaded
 		"angular_example" : "examples/angular-module/angular-example",
-		"angular_example_copy" : "examples/angular-module-copy/angular-example"
+		"angular_example_copy" : "examples/angular-module-copy/angular-example",*/
+		
+		//intro
+		"logo_intro" : "code/logo_intro/intro"
 		
 	}
 }, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
@@ -32,15 +33,21 @@ curl({
 		jQuery just loaded, lets make sure jQuery's ready to be used
 	*/
 	$(document).ready(function() {
-		
+		/* These are great examples :)
 		curl(['cat_example'], function(catExample){
 			catExample.build();
 			curl('angular_example_copy');
 		});
-		
 		curl('background_example');
-		
 		curl('angular_example');
+		*/
+		
+		curl('logo_intro');
+		PubSub.subscribe("Intro.COMPLETE", buildInterface);
+		
+		function buildInterface(e){
+			curl('site_navigation');	
+		}
 	});
 
 });

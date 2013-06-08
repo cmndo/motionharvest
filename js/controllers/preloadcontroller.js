@@ -22,7 +22,7 @@ define(['jquery', 'pubsub'], function($, PubSub) {
 				//disable Mouse hovers
 				PubSub.publish("UI.MOUSE_LOCK", true);
 
-				preload = new createjs.LoadQueue();
+				preload = new createjs.LoadQueue(true);
 				preload.addEventListener("complete", handleComplete);
 				preload.addEventListener("progress", handleOverallProgress);
 				preload.setMaxConnections(1);
