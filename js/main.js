@@ -13,43 +13,43 @@ curl({
 		"pubsub" : "utils/pubsub", //event wizardry
 		"mathutils": "utils/mathutils",
 		"root": "utils/root",
+		"system": "utils/system",
 		
 		//controllers
 		"loader": "controllers/preloadcontroller",
-		
-		/*//examples
-		"cat_example": "examples/catbox/catbox",
-		"background_example": "examples/background/main",
-		"angular_example" : "examples/angular-module/angular-example",
-		"angular_example_copy" : "examples/angular-module-copy/angular-example",*/
-		
+
 		//intro
-		"logo_intro" : "code/logo_intro/intro"
+		"logo_intro" : "code/logo_intro/intro",
+
+        //real deal
+        "navigation": "examples/navigation/nav"
+
 		
 	}
-}, ['jquery', 'pubsub', 'loader'], function($, PubSub, PreloadController) {
-	/*
-		Start loading some examples
-		jQuery just loaded, lets make sure jQuery's ready to be used
-	*/
+}, ['jquery', 'pubsub', 'loader','system'], function($, PubSub, PreloadController, System) {
+
 	$(document).ready(function() {
-		/* These are great examples :)
-		curl(['cat_example'], function(catExample){
-			catExample.build();
-			curl('angular_example_copy');
-		});
-		curl('background_example');
-		curl('angular_example');
+
+		/*
+			Mobile Check
+		
+		if(System.ios()){
+			buildMobileInterface();	
+		}else{
+			buildDesktopInterface();
+		}
 		*/
 		
+			
 		curl('logo_intro');
 		PubSub.subscribe("Intro.COMPLETE", buildInterface);
-		
+			
 		function buildInterface(e){
-			curl('site_navigation');	
+			curl('navigation');	
 		}
-	});
+		
 
+	});
 });
 	
 	

@@ -1,0 +1,213 @@
+
+<html>
+<head>
+	<title>Swing with elastic rotation</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<style>
+	body {
+		height: 900px;	
+	}
+	</style>
+</head>
+<body>
+	<div id="pend_one">
+		Hey
+	</div>
+	<div id="pend_two">
+		There
+	</div>
+	<div id="pend_three">
+		JavaScript
+	</div>
+	
+	<div id="pend_four">
+		mobile
+	</div>
+	<div id="pend_five">
+		safari
+	</div>
+	<div id="pend_six">
+		test.
+	</div>
+	
+	<script type="text/javascript">
+	/*
+	Copyright (c) 2012 Aaron Sherrill @codecommando
+	http://www.codecommando.net
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy of this
+	software and associated documentation files (the "Software"), to deal in the Software
+	without restriction, including without limitation the rights to use, copy, modify,
+	merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+	permit persons to whom the Software is furnished to do so, subject to the following
+	conditions:
+
+	The above copyright notice and this permission notice shall be included in all copies
+	or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+	FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+	DEALINGS IN THE SOFTWARE.
+	
+	
+	*/
+	//store device orientation. 
+	var deviceOrientation = {
+		ax: 0,
+		ay: 0,
+		az: 0,
+		rotation: 0,
+		arAlpha: 0,
+		arBeta: 0,
+		arGamma: 0
+	};
+	function handleMotionEvent(event) {
+	  deviceOrientation.ax = event.accelerationIncludingGravity.x
+	  deviceOrientation.ay = event.accelerationIncludingGravity.y
+	  deviceOrientation.az = event.accelerationIncludingGravity.z
+	  deviceOrientation.rotation = event.rotationRate;
+	  
+	  if (deviceOrientation.rotation != null) {
+	    deviceOrientation.arAlpha = Math.round(deviceOrientation.rotation.alpha);
+	    deviceOrientation.arBeta = Math.round(deviceOrientation.rotation.beta);
+	    deviceOrientation.arGamma = Math.round(deviceOrientation.rotation.gamma);
+	  }
+	}
+	window.addEventListener("devicemotion", handleMotionEvent, true);
+	
+	 // requestAnimationFrame for calcuating positions
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+    
+    //jquery get wrapped for safe keeping
+	$(document).ready(function () {
+		//housekeeping
+		var swingables = [];
+		
+		//Swingable Class
+		function Swingable(elem, x, y, hangDistance, startAngle, counterbalance, elasticity, strength){
+				
+				var $anchor = $('<div class="swingable"></div>');
+				var $child = elem;
+				var _counterbalance = counterbalance;
+				
+				//style them;
+				$anchor.css({
+					'position': 'absolute',
+					'top': y,
+					'left': x,
+					'width': 1,
+					'height': 1,
+					'border': '1px solid red'
+				});
+	
+				$child.css({
+					'position': 'relative',
+					'top': hangDistance
+				});
+				
+				$('body').append($anchor);
+				$anchor.append($child);
+				
+				//
+				var startR = startAngle, 
+					divider = 2,
+					position = {'rotation':startR},
+					vr = 0,
+					pr = 0,
+					_elasticity = elasticity || 0.9,
+					_strength = strength || 0.03,
+					target = {'rotation':startR};
+				
+				//private
+				function setAngle(num){
+					$anchor.css({
+						'transform':'rotate('+num+'deg)',
+						'-webkit-transform':'rotate('+num+'deg)',
+						'-moz-transform':'rotate('+num+'deg)'
+					});	
+					if(_counterbalance == true){
+						$child.css({
+							'transform':'rotate('+num+'deg)',
+							'-webkit-transform':'rotate('+-num+'deg)',
+							'-moz-transform':'rotate('+num+'deg)'
+						});
+					}
+				}
+				setAngle(startR);
+				
+				//public
+				this.render = function(){
+					
+					//90 is tilted left
+					//-90 is tilted right
+					//0 is up and down
+					switch(window.orientation){
+						case 90:
+							target.rotation = (deviceOrientation.ay * 7)
+						break;
+						case -90:
+							target.rotation = -(deviceOrientation.ay * 7)
+						break;
+						case 0:
+							target.rotation = -(deviceOrientation.ax * 7)
+						break;
+					}
+					
+					//difference
+					vr = target.rotation - position.rotation;
+					
+					//how far to go
+					pr = pr * elasticity + vr * strength;
+					
+					//increment
+					position.rotation += pr;
+					
+					//set angle
+					setAngle(position.rotation - startAngle);
+					
+					//Fistpump
+				}
+		};
+		//A simple build out and a simple array for managing. This would fit well
+		//inside of a Class who's set up to control a series of swinging elements.
+		
+		//elem, x, y, hangDistance, startAngle, counterbalance, elasticity (.99 max), strength(between .2 and .6 is good)
+		var swing0 = new Swingable($('#pend_one'), 270, 75, 100, 0, false, .96, .05);
+		var swing1 = new Swingable($('#pend_two'), 370, 75, 200, 0, false, .97, .04);
+		var swing2 = new Swingable($('#pend_three'), 470, 75, 100, 0, false, .98, .03);
+		
+		var swing3 = new Swingable($('#pend_four'), 270, 475, 100, 0, true, .87, .04);
+		var swing4 = new Swingable($('#pend_five'), 370, 475, 200, 0, true, .83, .04);
+		var swing5 = new Swingable($('#pend_six'), 470, 475, 100, 0, true, .75, .04);
+		
+		var swingables = [swing0, swing1, swing2, swing3, swing4, swing5];
+		var i;
+		
+		
+		(function animloop(){
+	      requestAnimFrame(animloop);
+	      
+	      //loop through swingable elements.
+	      for(i = 0; i<swingables.length; i++){
+	      	swingables[i].render();	
+	      }
+	    })();
+	    //end managing code 
+
+	    
+	});
+	</script>
+</body>
+</html>
